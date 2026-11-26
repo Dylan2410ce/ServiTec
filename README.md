@@ -148,3 +148,34 @@ El proyecto tiene 15 pruebas automáticas que revisan los cinco módulos, las re
 ```
 python manage.py test clientes servicios tecnicos solicitudes asignaciones
 ```
+
+| Método | URL | Código correcto | Posibles errores |
+| --- | --- | --- | --- |
+| POST | http://localhost:8000/api/token/ | 200 | 400 |
+| GET | http://localhost:8000/api/usuario/ | 200 | 401 |
+| GET | http://localhost:8000/api/reportes/resumen/ | 200 | 401, 403 |
+| GET | http://localhost:8000/api/clientes/ | 200 | 400, 401, 403 |
+| POST | http://localhost:8000/api/clientes/ | 201 | 400, 401, 403 |
+| GET | http://localhost:8000/api/clientes/1/ | 200 | 401, 403, 404 |
+| PUT / PATCH | http://localhost:8000/api/clientes/1/ | 200 | 400, 401, 403, 404 |
+| DELETE | http://localhost:8000/api/clientes/1/ | 204 | 401, 403, 404, 409 |
+| GET | http://localhost:8000/api/servicios/ | 200 | 400, 401, 403 |
+| POST | http://localhost:8000/api/servicios/ | 201 | 400, 401, 403 |
+| GET | http://localhost:8000/api/servicios/1/ | 200 | 401, 403, 404 |
+| PUT / PATCH | http://localhost:8000/api/servicios/1/ | 200 | 400, 401, 403, 404 |
+| DELETE | http://localhost:8000/api/servicios/1/ | 204 | 401, 403, 404, 409 |
+| GET | http://localhost:8000/api/tecnicos/ | 200 | 400, 401, 403 |
+| POST | http://localhost:8000/api/tecnicos/ | 201 | 400, 401, 403 |
+| GET | http://localhost:8000/api/tecnicos/1/ | 200 | 401, 403, 404 |
+| PUT / PATCH | http://localhost:8000/api/tecnicos/1/ | 200 | 400, 401, 403, 404 |
+| DELETE | http://localhost:8000/api/tecnicos/1/ | 204 | 401, 403, 404, 409 |
+| GET | http://localhost:8000/api/solicitudes/ | 200 | 400, 401, 403 |
+| POST | http://localhost:8000/api/solicitudes/ | 201 | 400, 401, 403 |
+| GET | http://localhost:8000/api/solicitudes/1/ | 200 | 401, 403, 404 |
+| PUT / PATCH | http://localhost:8000/api/solicitudes/1/ | 200 | 400, 401, 403, 404 |
+| DELETE | http://localhost:8000/api/solicitudes/1/ | 204 | 401, 403, 404, 409 |
+| GET | http://localhost:8000/api/asignaciones/ | 200 | 400, 401, 403 |
+| POST | http://localhost:8000/api/asignaciones/ | 201 | 400, 401, 403 |
+| GET | http://localhost:8000/api/asignaciones/1/ | 200 | 401, 403, 404 |
+| PUT / PATCH | http://localhost:8000/api/asignaciones/1/ | 200 | 400, 401, 403, 404 |
+| DELETE | http://localhost:8000/api/asignaciones/1/ | 204 | 401, 403, 404, 409 |
