@@ -179,3 +179,149 @@ python manage.py test clientes servicios tecnicos solicitudes asignaciones
 | GET | http://localhost:8000/api/asignaciones/1/ | 200 | 401, 403, 404 |
 | PUT / PATCH | http://localhost:8000/api/asignaciones/1/ | 200 | 400, 401, 403, 404 |
 | DELETE | http://localhost:8000/api/asignaciones/1/ | 204 | 401, 403, 404, 409 |
+
+
+# ServiTec — Frontend SPA (React + Bootstrap 5) & API REST (Django)
+
+**Universidad de Costa Rica — Sede del Pacífico**  
+**Carrera:** Bachillerato en Informática Empresarial  
+**Curso:** Desarrollo de Software IV (Proyecto 02)  
+**Docente:** Irwin Leal Elizondo  
+**Integrantes:**
+- Dylan Calvo Escobar
+- Marcony Salazar Bogantes
+- Emmanuel Porras Jimenez
+
+---
+
+## 1. Descripción general
+
+**ServiTec** es una aplicación web *Single Page Application* (SPA) desarrollada con **React, Vite, React Router y Bootstrap 5**, conectada mediante `fetch` nativo a la API REST de **Django REST Framework** y **MySQL** construida en el Proyecto 1.
+
+El sistema gestiona el flujo completo de atención de un centro de soporte técnico a través de **cinco módulos de negocio** y un **panel general de control (Dashboard)**:
+
+1. **Clientes:** Registro, consulta, edición, activación/desactivación y eliminación controlada.
+2. **Servicios:** Catálogo de servicios técnicos con código, descripción, tarifa en colones y disponibilidad.
+3. **Técnicos:** Administración del personal técnico y asociación múltiple de servicios habilitados.
+4. **Solicitudes:** Gestión de órdenes de servicio con prioridades (`BAJA`, `NORMAL`, `ALTA`) y máquina de estados (`PENDIENTE` → `EN_PROCESO` → `RESUELTA` / `CANCELADA`).
+5. **Asignaciones:** Programación de técnicos por solicitud con validación de especialidad y control de traslapes horarios.
+
+---
+
+## 2. Requisitos previos
+
+- **Python** 3.10 o superior
+- **MySQL** 8.0 o superior
+- **Node.js** 18.0 o superior y **npm**
+- **Git**
+
+---
+
+## 3. Instalación y ejecución del Backend (Django)
+
+1. Ubíquese en la carpeta del proyecto backend (donde se encuentra `manage.py`) y active su entorno virtual:
+   ```bash
+   python -m venv venv
+   # En Windows:
+   venv\Scripts\activate
+   # En Linux/macOS:
+   source venv/bin/activate
+   ```
+
+2. Instale las dependencias, incluyendo `django-cors-headers` para permitir peticiones desde el frontend:
+   ```bash
+   pip install -r requirements.txt
+   pip install django-cors-headers
+   ```
+
+3. Cree la base de datos en MySQL:
+   ```sql
+   CREATE DATABASE IF NOT EXISTS servitec_db CHARACTER SET utf8mb4;
+   ```
+
+4. Configure el archivo `.env` del backend tomando como base `.env.example`:
+   ```env
+   DB_NAME=servitec_db
+   DB_USER=tu_usuario_mysql
+   DB_PASSWORD=tu_contrasena_mysql
+   DB_HOST=127.0.0.1
+   DB_PORT=3306
+   ```
+
+5. Aplique las migraciones e inicie el servidor en el puerto `8000`:
+   ```bash
+   python manage.py migrate
+   python manage.py runserver
+   ```
+
+### Configuración de CORS en Django (`backend_servitec/settings.py`)
+
+Para permitir la comunicación entre Vite (`http://localhost:5173`) y Django (`http://localhost:8000`), el backend incluye la siguiente configuración en `settings.py`:
+
+- En `INSTALLED_APPS`: `'corsheaders'`
+- En `MIDDLEWARE` (antes de `CommonMiddleware`): `'corsheaders.middleware.CorsMiddleware'`
+- Orígenes autorizados:
+  ```python
+  CORS_ALLOWED_ORIGINS = [
+      'http://localhost:5173',
+      '[http://127.0.0.1:5173](http://127.0.0.1:5173)',
+  ]
+  ```
+
+---
+
+## 4. Instalación y ejecución del Frontend (React + Vite)
+
+1. Abra una segunda terminal dentro de la carpeta `frontend/`:
+   ```bash
+   cd frontend
+   npm install
+   ```
+
+2. Cree el archivo de variables de entorno `.env` copiando `.env.example`:
+   ```bash
+   cp .env.example .env
+   ```
+   Contenido de `.env.example` (sin credenciales ni secretos):
+   ```env
+   VITE_API_BASE_URL=http://localhost:8000/api
+   ```
+
+3. Inicie el servidor de desarrollo de Vite:
+   ```bash
+   npm run dev
+   ```
+   La aplicación estará disponible en `http://localhost:5173`.
+
+---
+
+## 5. Perfiles y usuarios de prueba
+
+El sistema maneja tres perfiles configurados mediante grupos y permisos de Django (`is_staff` y permisos `app.accion_modelo`):
+
+| Perfil | Usuario de prueba | Contraseña de prueba | Alcance funcional |
+| :--- | :--- | :--- | :--- |
+| **Administrador** | `root` | `root` | Acceso total: consulta, creación, edición y eliminación en los 5 módulos. |
+| **Operador** | `operador` | `clave12345` | Consulta en los 5 módulos; crea y edita en **Clientes**, **Solicitudes** y **Asignaciones**. No puede modificar **Servicios** ni **Técnicos**, ni eliminar registros. |
+| **Consulta** | `consulta` | `clavelarga12345` | Solo lectura (`GET`) en el Dashboard y los 5 módulos. Cualquier operación de escritura devuelve `403 Forbidden`. |
+
+> **Nota para pruebas de seguridad (`403 Forbidden`):** La barra superior incluye un interruptor *"Simular botones (probar 403)"* para usuarios no administradores que permite habilitar los botones de acción en la interfaz y comprobar que el servidor Django rechaza realmente la operación con código `403`.
+
+
+---
+
+## 6. Estructura del proyecto Frontend
+
+```text
+frontend/
+├── .env.example
+├── package.json
+└── src/
+    ├── main.jsx                  # Punto de entrada e importación de Bootstrap 5
+    ├── App.jsx                   # Definición de rutas públicas y privadas (React Router)
+    ├── api.jsx                   # Cliente fetch centralizado, manejo de token y errores HTTP
+    ├── AuthContext.jsx           # Estado global de sesión, usuario, rol y permisos
+    ├── index.css                 # Tema visual corporativo en azul marino
+    ├── components/               # Componentes reutilizables (Layout, ProtectedRoute, Alertas, Paginación, Modales, Cards)
+    └── pages/                    # Pantallas y formularios de Login, Dashboard y los 5 módulos
+```
