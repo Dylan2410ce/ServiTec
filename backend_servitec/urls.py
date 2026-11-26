@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from solicitudes.views import resumen_api
+from .views import usuario_actual_api
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/token/', obtain_auth_token, name='api_token'),
     path('api/clientes/', include('clientes.urls')),
+    path('api/usuario/', usuario_actual_api, name='usuario_actual_api'),
     path('api/servicios/', include('servicios.urls')),
     path('api/tecnicos/', include('tecnicos.urls')),
     path('api/solicitudes/', include('solicitudes.urls')),
