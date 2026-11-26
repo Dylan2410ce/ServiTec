@@ -1,0 +1,100 @@
+:root {
+  --navy-900: #0b1f3a;
+  --navy-800: #13315c;
+  --navy-700: #1b437a;
+  --navy-600: #255799;
+  --navy-100: #e6eef8;
+  --surface-bg: #f1f5f9;
+  --border-soft: #d8e2ef;
+}
+
+body {
+  background-color: var(--surface-bg);
+  color: #1e293b;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+/* Barra superior y navegación lateral en azul marino */
+.servitec-navbar {
+  background: linear-gradient(90deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  border-bottom: 2px solid var(--navy-600);
+}
+
+.servitec-sidebar {
+  background: linear-gradient(180deg, var(--navy-900) 0%, var(--navy-800) 100%);
+  min-height: calc(100vh - 58px);
+}
+
+.servitec-sidebar .nav-link {
+  color: #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  transition: all 0.18s ease;
+}
+
+.servitec-sidebar .nav-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.servitec-sidebar .nav-link.active {
+  background-color: var(--navy-600);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Botones principales y tarjetas */
+.btn-navy {
+  background-color: var(--navy-800);
+  border-color: var(--navy-800);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.btn-navy:hover,
+.btn-navy:focus {
+  background-color: var(--navy-700);
+  border-color: var(--navy-700);
+  color: #ffffff;
+}
+
+.btn-outline-navy {
+  color: var(--navy-800);
+  border-color: var(--navy-800);
+  font-weight: 500;
+}
+
+.btn-outline-navy:hover {
+  background-color: var(--navy-800);
+  color: #ffffff;
+}
+
+.servitec-card {
+  background-color: #ffffff;
+  border: 1px solid var(--border-soft);
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 14px rgba(11, 31, 58, 0.05);
+}
+
+.servitec-card-header {
+  background-color: var(--navy-100);
+  border-bottom: 1px solid var(--border-soft);
+  color: var(--navy-900);
+  font-weight: 600;
+}
+
+/* Encabezado de tablas Bootstrap en azul marino */
+.table-navy thead th {
+  background-color: var(--navy-900);
+  color: #ffffff;
+  font-weight: 600;
+  border-color: var(--navy-800);
+  white-space: nowrap;
+}
+
+.login-wrapper {
+  min-height: 100vh;
+  background: radial-gradient(circle at top right, var(--navy-700), var(--navy-900) 70%);
+}

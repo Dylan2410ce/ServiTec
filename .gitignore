@@ -19,3 +19,8 @@ __pycache__/
 # 5. Archivos de sistema operativo
 .DS_Store
 Thumbs.db
+
+node_modules
+dist
+.env
+.env.local
